@@ -13,7 +13,7 @@ local utility = {}
 
 -- themes
 local objects = {}
-local themes = getgenv().venyxTheme or {
+local themes = {
 	Background = Color3.fromRGB(24, 24, 24), 
 	Glow = Color3.fromRGB(0, 0, 0), 
 	Accent = Color3.fromRGB(10, 10, 10), 
@@ -21,6 +21,10 @@ local themes = getgenv().venyxTheme or {
 	DarkContrast = Color3.fromRGB(14, 14, 14),  
 	TextColor = Color3.fromRGB(255, 255, 255)
 }
+
+if getgenv().venyxTheme then
+	themes = getgenv().venyxTheme
+end
 
 do
 	function utility:Create(instance, properties, children)
