@@ -1782,7 +1782,7 @@ do
 		
 		search.Button.MouseButton1Click:Connect(function()
 			if search.Button.Rotation == 0 then
-				self:updateDropdown(dropdown, nil, list, callback)
+				self:updateDropdown(dropdown, nil, listvar, callback)
 			else
 				self:updateDropdown(dropdown, nil, nil, callback)
 			end
@@ -1790,7 +1790,7 @@ do
 		
 		search.TextBox.Focused:Connect(function()
 			if search.Button.Rotation == 0 then
-				self:updateDropdown(dropdown, nil, list, callback)
+				self:updateDropdown(dropdown, nil, listvar, callback)
 			end
 			
 			focused = true
@@ -1802,7 +1802,7 @@ do
 		
 		search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if focused then
-				local list = utility:Sort(search.TextBox.Text, list)
+				local list = utility:Sort(search.TextBox.Text, listvar())
 				list = #list ~= 0 and list 
 				
 				self:updateDropdown(dropdown, nil, list, callback)
@@ -2099,7 +2099,7 @@ do
 		return value
 	end
 	
-	function section:updateDropdown(dropdown, title, list, callback)
+	function section:updateDropdown(dropdown, title, listvar, callback)
 		dropdown = self:getModule(dropdown)
 		
 		if title then
@@ -2115,8 +2115,17 @@ do
 				button:Destroy()
 			end
 		end
-			
-		for i, value in pairs(list or {}) do
+
+		
+		local list
+		    
+		if typeof(listvar) == "function" then
+		list = listvar() or {}
+		else
+		list = listvar or {}
+		end
+		
+		for i, value in pairs(list) do
 			local button = utility:Create("ImageButton", {
 				Parent = dropdown.List.Frame,
 				BackgroundTransparency = 1,
