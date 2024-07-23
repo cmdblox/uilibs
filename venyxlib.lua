@@ -1802,7 +1802,11 @@ do
 		
 		search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if focused then
-				local list = utility:Sort(search.TextBox.Text, listvar())
+				if typeof(listvar) == "function" then
+					utility:Sort(search.TextBox.Text, listvar())
+				else
+					utility:Sort(search.TextBox.Text, listvar)
+				end
 				list = #list ~= 0 and list 
 				
 				self:updateDropdown(dropdown, nil, list, callback)
